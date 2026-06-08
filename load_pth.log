@@ -26,3 +26,11 @@ with sdpa_kernel(SDPBackend.FLASH_ATTENTION):
     )
 
 print(out.shape)
+
+
+torch: 2.8.0+cu126
+cuda: 12.6
+flash_sdp_enabled: True
+mem_efficient_sdp_enabled: True
+math_sdp_enabled: True
+torch.Size([2, 12, 1024, 64])
