@@ -1,0 +1,88 @@
+mmseg root inferred as: /mnt/ht2-nas2/wj/mm_series/mmsegmentation
+skysensepp dir inferred as: /mnt/ht2-nas2/wj/mm_series/mmsegmentation/projects/skysensepp
+device: cuda:0
+
+========================================================================================
+[SkySense++ S1 ViT]
+Checkpoint: /mnt/ht2_nas2/wj/SkySensePlusPlus/finetune/pth_for_finetune/sspp_s1.pth
+Model params: 302,428,176
+06/08 09:27:37 - mmengine - INFO - Loads checkpoint by local backend from path: /mnt/ht2_nas2/wj/SkySensePlusPlus/finetune/pth_for_finetune/sspp_s1.pth
+Checkpoint tensors after key cleaning: 292
+Shape mismatches before adaptation: 0
+Prepared tensors: 292
+Loadable tensors: 292
+Unexpected tensors before load: 0
+Final shape mismatches after adaptation: 0
+Missing keys, suspicious: 3
+  - mask_token
+  - vocabulary_token
+  - vocabulary_weight
+Missing keys, benign: 0
+Unexpected keys: 0
+[WARN] Weight loading finished, but please inspect missing/unexpected keys.
+
+========================================================================================
+[SkySense++ S2 ViT]
+Checkpoint: /mnt/ht2_nas2/wj/SkySensePlusPlus/finetune/pth_for_finetune/sspp_s2.pth
+Model params: 302,559,248
+06/08 09:27:42 - mmengine - INFO - Loads checkpoint by local backend from path: /mnt/ht2_nas2/wj/SkySensePlusPlus/finetune/pth_for_finetune/sspp_s2.pth
+Checkpoint tensors after key cleaning: 295
+Shape mismatches before adaptation: 0
+Prepared tensors: 295
+Loadable tensors: 295
+Unexpected tensors before load: 0
+Final shape mismatches after adaptation: 0
+Missing keys, suspicious: 0
+Missing keys, benign: 0
+Unexpected keys: 0
+[OK] Weight loading looks clean.
+
+========================================================================================
+[SkySense++ HR SwinV2]
+Checkpoint: /mnt/ht2_nas2/wj/SkySensePlusPlus/finetune/pth_for_finetune/sspp_hr.pth
+Model params: 664,406,848
+06/08 09:27:48 - mmengine - INFO - Loads checkpoint by local backend from path: /mnt/ht2_nas2/wj/SkySensePlusPlus/finetune/pth_for_finetune/sspp_hr.pth
+Checkpoint tensors after key cleaning: 512
+Shape mismatches before adaptation: 0
+Prepared tensors: 464
+Loadable tensors: 464
+Unexpected tensors before load: 0
+Final shape mismatches after adaptation: 0
+06/08 09:27:50 - mmengine - INFO - Delete `relative_position_index` and `relative_coords_table` since we always re-init these params according to the `window_size`, which might cause unwanted but unworried warnings when loading checkpoint.
+Missing keys, suspicious: 0
+Missing keys, benign: 48
+  - stages.0.blocks.0.attn.w_msa.relative_coords_table
+  - stages.0.blocks.0.attn.w_msa.relative_position_index
+  - stages.0.blocks.1.attn.w_msa.relative_coords_table
+  - stages.0.blocks.1.attn.w_msa.relative_position_index
+  - stages.1.blocks.0.attn.w_msa.relative_coords_table
+  - stages.1.blocks.0.attn.w_msa.relative_position_index
+  - stages.1.blocks.1.attn.w_msa.relative_coords_table
+  - stages.1.blocks.1.attn.w_msa.relative_position_index
+  - stages.2.blocks.0.attn.w_msa.relative_coords_table
+  - stages.2.blocks.0.attn.w_msa.relative_position_index
+  - stages.2.blocks.1.attn.w_msa.relative_coords_table
+  - stages.2.blocks.1.attn.w_msa.relative_position_index
+  - stages.2.blocks.2.attn.w_msa.relative_coords_table
+  - stages.2.blocks.2.attn.w_msa.relative_position_index
+  - stages.2.blocks.3.attn.w_msa.relative_coords_table
+  - stages.2.blocks.3.attn.w_msa.relative_position_index
+  - stages.2.blocks.4.attn.w_msa.relative_coords_table
+  - stages.2.blocks.4.attn.w_msa.relative_position_index
+  - stages.2.blocks.5.attn.w_msa.relative_coords_table
+  - stages.2.blocks.5.attn.w_msa.relative_position_index
+  - stages.2.blocks.6.attn.w_msa.relative_coords_table
+  - stages.2.blocks.6.attn.w_msa.relative_position_index
+  - stages.2.blocks.7.attn.w_msa.relative_coords_table
+  - stages.2.blocks.7.attn.w_msa.relative_position_index
+  - stages.2.blocks.8.attn.w_msa.relative_coords_table
+  - stages.2.blocks.8.attn.w_msa.relative_position_index
+  - stages.2.blocks.9.attn.w_msa.relative_coords_table
+  - stages.2.blocks.9.attn.w_msa.relative_position_index
+  - stages.2.blocks.10.attn.w_msa.relative_coords_table
+  - stages.2.blocks.10.attn.w_msa.relative_position_index
+  ... and 18 more
+Unexpected keys: 0
+[OK] Weight loading looks clean.
+
+All selected tests finished.
