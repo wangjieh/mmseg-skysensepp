@@ -1,58 +1,28 @@
-/mnt/ht2-nas2/wj/mm_series/mmsegmentation/mmseg/models/decode_heads/decode_head.py:120: UserWarning: For binary segmentation, we suggest using`out_channels = 1` to define the outputchannels of segmentor, and use `threshold`to convert `seg_logits` into a predictionapplying a threshold
-  warnings.warn('For binary segmentation, we suggest using'
-/mnt/ht2-nas2/wj/mm_series/mmsegmentation/mmseg/models/losses/cross_entropy_loss.py:250: UserWarning: Default ``avg_non_ignore`` is False, if you would like to ignore the certain label and average loss over non-ignore labels, which is the same with PyTorch official cross_entropy, set ``avg_non_ignore=True``.
-  warnings.warn(
-06/08 10:38:54 - mmengine - INFO - Distributed training is not used, all SyncBatchNorm (SyncBN) layers in the model will be automatically reverted to BatchNormXd layers if they are used.
-Traceback (most recent call last):
-  File "/mnt/ht2-nas2/wj/mm_series/mmsegmentation/projects/skysensepp/../../tools/train.py", line 104, in <module>
-    main()
-  File "/mnt/ht2-nas2/wj/mm_series/mmsegmentation/projects/skysensepp/../../tools/train.py", line 93, in main
-    runner = Runner.from_cfg(cfg)
-             ^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/runner/runner.py", line 462, in from_cfg
-    runner = cls(
-             ^^^^
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/runner/runner.py", line 442, in __init__
-    self.register_hooks(default_hooks, custom_hooks)
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/runner/runner.py", line 1992, in register_hooks
-    self.register_default_hooks(default_hooks)
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/runner/runner.py", line 1966, in register_default_hooks
-    self.register_hook(hook)
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/runner/runner.py", line 1877, in register_hook
-    hook_obj = HOOKS.build(hook)
-               ^^^^^^^^^^^^^^^^^
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/registry/registry.py", line 570, in build
-    return self.build_func(cfg, *args, **kwargs, registry=self)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/registry/build_functions.py", line 98, in build_from_cfg
-    obj_cls = registry.get(obj_type)
-              ^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/registry/registry.py", line 451, in get
-    self.import_from_location()
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/registry/registry.py", line 376, in import_from_location
-    import_module(loc)
-  File "/home/users_test/miniconda3/envs/abc/lib/python3.12/importlib/__init__.py", line 90, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
-  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
-  File "/mnt/ht2-nas2/wj/mm_series/mmsegmentation/mmseg/engine/__init__.py", line 3, in <module>
-    from .optimizers import (ForceDefaultOptimWrapperConstructor,
-  File "/mnt/ht2-nas2/wj/mm_series/mmsegmentation/mmseg/engine/optimizers/__init__.py", line 3, in <module>
-    from .layer_decay_optimizer_constructor import (
-  File "/mnt/ht2-nas2/wj/mm_series/mmsegmentation/mmseg/engine/optimizers/layer_decay_optimizer_constructor.py", line 103, in <module>
-    @OPTIM_WRAPPER_CONSTRUCTORS.register_module()
-     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/registry/registry.py", line 666, in _register
-    self._register_module(module=module, module_name=name, force=force)
-  File "/mnt/ht2-nas2/wj/mm_series/mmengine/mmengine/registry/registry.py", line 611, in _register_module
-    raise KeyError(f'{name} is already registered in {self.name} '
-KeyError: 'LearningRateDecayOptimizerConstructor is already registered in optimizer wrapper constructor at projects.skysensepp.engine.optimizers.layer_decay_optimizer_constructor'
+import torch
+import torch.nn.functional as F
+from torch.nn.attention import sdpa_kernel, SDPBackend
+
+print("torch:", torch.__version__)
+print("cuda:", torch.version.cuda)
+print("flash_sdp_enabled:", torch.backends.cuda.flash_sdp_enabled())
+print("mem_efficient_sdp_enabled:", torch.backends.cuda.mem_efficient_sdp_enabled())
+print("math_sdp_enabled:", torch.backends.cuda.math_sdp_enabled())
+
+B = 2
+H = 12
+N = 1024
+D = 64
+
+q = torch.randn(B, H, N, D, device="cuda", dtype=torch.bfloat16)
+k = torch.randn(B, H, N, D, device="cuda", dtype=torch.bfloat16)
+v = torch.randn(B, H, N, D, device="cuda", dtype=torch.bfloat16)
+
+with sdpa_kernel(SDPBackend.FLASH_ATTENTION):
+    out = F.scaled_dot_product_attention(
+        q, k, v,
+        attn_mask=None,
+        dropout_p=0.0,
+        is_causal=False
+    )
+
+print(out.shape)
